@@ -1,11 +1,10 @@
-import { ArrowLeft, ArrowRight, PersonStanding, Scale, ScaleIcon, Target, User } from "lucide-react"
+import { ArrowLeft, ArrowRight, PersonStanding, ScaleIcon, Target, User } from "lucide-react"
 import { useState } from "react"
 import toast, { Toaster } from "react-hot-toast"
 import { useAppContext } from "../context/AppContext"
 import Input from "../components/ui/Input"
-import type { ProfileFormData, UserData } from "../types"
+import type { ProfileFormData } from "../types"
 import Button from "../assets/ui/Button"
-import mockApi from "../assets/mockApi"
 import { ageRanges, goalOptions } from "../assets/assets"
 import Slider from "../assets/ui/Slider"
 import api from "../configs/api"
@@ -32,6 +31,11 @@ if(step===1){
         return toast("Age is required")
     }
 }
+if(step === 2){
+        if(!formData.weight || Number(formData.weight) < 20){
+            return toast("Please enter a valid weight (min 20kg)")
+        }
+    }
 if(step< totalSteps){
     setStep(step +1);
 }else{
@@ -111,14 +115,14 @@ if(step< totalSteps){
                                 <p className="text-slate-500 dark:text-slate-400 text-sm">Help us track your progress</p>
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-4 ,ax-w-2xl">
+                            <div className="flex flex-col gap-4 max-w-2xl">
                             <Input label="Weight (kg)" type="number" 
                             value={ formData.weight} onChange={(v)=>updateField('weight',v)} 
                             placeholder="Enter your weight" min={20} max={300} required />
  
-                            <Input label="  Height (cm) - Optional" type="number" 
+                            <Input label="Height (cm) - Optional" type="number" 
                             value={ formData.height} onChange={(v)=>updateField('height',v)} 
-                            placeholder="Enter your height" min={100} max={250} required />
+                            placeholder="Enter your height" min={100} max={250}/>
                             </div>
                             
                    </div> 
@@ -167,7 +171,7 @@ burn+=100;
     </button>
 ))}
                 </div>
-                <div className="border-t bborder-slate-200 dark:border-slate-700 my-6 max-w-lg"></div>
+                <div className="border-t border-slate-200 dark:border-slate-700 my-6 max-w-lg"></div>
                 {/* {Daily Targets} */}
                 <div className="space-y-8 max-w-lg">
 <h3 className="text-md font-medium text-slate-800 dark:text-white mb-4">Daily Targets</h3>
